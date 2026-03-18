@@ -1,0 +1,28 @@
+﻿# OS / editor
+.DS_Store
+Thumbs.db
+
+# Temp probe outputs
+_tmp_*.html
+_tmp_*.json
+_tmp_*.xml
+_tmp_*.txt
+
+# Logs
+logs/
+*.log
+error_log*
+debug.log
+app/public/app/debug.log
+
+# Archives / backups
+*.zip
+app/restructure-archive-*/
+app/restructure-snapshot-*/
+app/public/.parity-backup-*/
+
+# LocalWP runtime/cache artifacts
+cache/
+backups-dup-lite/
+upgrade/
+upgrade-temp-backup/
