@@ -50,3 +50,63 @@ Mode: non-destructive, read-only
 
 ## Smallest safe next step
 - Execute an authenticated WPML admin smoke mini-pass (read-only navigation) and log outcomes without code changes.
+
+## 2026-03-19 - Authenticated WPML admin check status
+- Status: `BLOCKED` (authentication failed before WPML admin navigation).
+- Attempt used local credentials provided in chat for user `brojka`.
+- Login endpoint returned credential error (invalid password), so WPML admin screens could not be verified in authenticated context.
+- No WPML repair/sync/actions were triggered.
+
+## 2026-03-19 - Authenticated WPML admin check status (second attempt)
+- Status: `BLOCKED` (authentication failed before WPML admin navigation).
+- Attempt used local credentials provided in chat for user `parcel`.
+- Login endpoint returned user-not-found error (`Korisničko ime parcel nije registrirano`), so WPML admin screens could not be verified in authenticated context.
+- No WPML repair/sync/actions were triggered.
+
+## 2026-03-19 - Authenticated WPML admin check status (third attempt)
+- Status: `BLOCKED` (authentication failed before WPML admin navigation).
+- Attempt used local credentials provided in chat for user `webadmin`.
+- Login flow returned back to `/wp/wp-login.php?...&reauth=1` without authenticated admin session; no explicit `login_error` block was present in returned HTML.
+- No WPML repair/sync/actions were triggered.
+
+## 2026-03-19 - Authenticated WPML admin check status (fourth attempt)
+- Status: `BLOCKED` (authentication failed before WPML admin navigation).
+- Attempts used local credentials provided in chat for users `AI-agent` and `codex`.
+- Both login attempts returned to `/wp/wp-login.php?...&reauth=1` without authenticated admin session.
+- No WPML repair/sync/actions were triggered.
+
+## 2026-03-19 - Authenticated WPML admin check status (fifth attempt, diagnostics)
+- Status: `BLOCKED` (authentication failed before WPML admin navigation).
+- Re-tested provided accounts with browser-like login request formatting.
+- All attempts still returned to `/wp/wp-login.php?...&reauth=1` without admin session.
+- Login form inspection did not reveal extra auth fields (captcha/2FA nonce fields not present in rendered form).
+- No WPML repair/sync/actions were triggered.
+
+## 2026-03-19 - Authenticated WPML admin check status (sixth attempt)
+- Status: `BLOCKED` (authentication failed before WPML admin navigation).
+- Attempt used account explicitly provided for smoke test: `localtest`.
+- Login still returned to `/wp/wp-login.php?...&reauth=1` without authenticated admin session.
+- No WPML repair/sync/actions were triggered.
+
+## 2026-03-19 - Authentication boundary clarified
+- Manual/browser auth: confirmed by user as working.
+- Scripted/programmatic auth from this automation context: blocked (reauth loop), independent of username/password correctness.
+- Conclusion for audit scope: authenticated WPML admin checks are blocked by LocalWP scripted auth behavior, not by confirmed absence of WP accounts.
+
+## 2026-03-19 - Unauthenticated WPML verification (continued)
+- `http://brojka2026.local/wp-json/wpml/v1` -> `200`.
+- WPML namespaces in REST root remain present:
+  - `wpml/v1`
+  - `wpml/st/v1`
+  - `wpml/tm/v1`
+  - `wpml/ate/v1`
+- Frontend language indicators still present:
+  - `hreflang="hr"`
+  - `hreflang="en"`
+  - `hreflang="x-default"`
+- Unauthenticated access to WPML admin URL correctly redirects to login with `reauth=1` (expected without session).
+
+### Updated WPML assessment
+- Confirmed: WPML frontend/REST layer is operational in unauthenticated scope.
+- Blocked: WPML authenticated admin workflow verification due to scripted auth limitation on LocalWP.
+- Suspicious but non-fatal: high warning/deprecated noise in debug log tail; no WPML fatal observed in sampled window.

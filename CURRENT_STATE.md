@@ -92,3 +92,11 @@ Interpretation:
 ## 7) Smallest Safe Next Step
 
 - Execute authenticated smoke subset (frontend + wp-admin + WPML admin pages) read-only where possible, and append precise evidence to `SMOKE_TEST_RESULTS.md` and `WPML_AUDIT.md` before any code changes.
+
+## 8) Authentication Constraint (2026-03-19 update)
+
+- Manual login in browser is confirmed by user as working on `http://brojka2026.local/wp/wp-login.php`.
+- Scripted/programmatic login from automation remains blocked (reauth loop / no admin session establishment).
+- Current audit boundary:
+  - authenticated admin/WPML checks: blocked in automation context,
+  - unauthenticated checks: continue as primary verification path until auth automation blocker is explicitly addressed.

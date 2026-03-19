@@ -34,6 +34,11 @@ Exit criteria:
 Exit criteria:
 - Each tested flow has PASS/PARTIAL/FAIL with evidence.
 
+Status update (2026-03-19):
+- Do not spend additional time on new scripted login retries.
+- Treat Block B as `blocked by scripted auth on LocalWP` until explicitly re-opened.
+- Continue with read-only unauthenticated verification and documentation in parallel.
+
 ## Block C - Low-Risk Remediation Proposal (after B)
 - Based on audit findings only, propose smallest safe changes with easy rollback.
 - No broad refactors.
